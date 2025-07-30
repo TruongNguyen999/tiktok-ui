@@ -4,7 +4,7 @@ import GlobalStyle from "./component/GlobalStyle";
 import { BrowserRouter as Router } from "react-router-dom";
 
 createRoot(document.getElementById("root")).render(
-  <Router>
+  <Router basename="/tiktok-ui">
     <GlobalStyle>
       <App />
     </GlobalStyle>
