@@ -11,7 +11,7 @@ import DefaultLayout from '../component/Layouts/DefaultLayout';
 //public layout
 const publicLayout = [
     {route: '/', component: Home, layout: DefaultLayout},
-    {route: '/discover', component: Discover, layout: null},
+    {route: '/discover', component: Discover, layout: DefaultLayout},
     {route: '/follow', component: Follow, layout: DefaultLayout},
     {route: '/friends', component: Friends, layout: DefaultLayout},
     {route: '/info', component: Info, layout: DefaultLayout},
