@@ -3,6 +3,9 @@ import { publicLayout as routes } from "./Routes";
 import DefaultLayout from "./component/Layouts/DefaultLayout";
 import { Fragment } from "react";
 
+    console.log(import.meta.env);
+
+
 const App = () => {
   const onRenderRoutes = () => {
     let result;
@@ -30,9 +33,6 @@ const App = () => {
         );
       });
     }
-
-    console.log('log re-render');
-    
 
     return <Routes>{result}</Routes>;
   };
