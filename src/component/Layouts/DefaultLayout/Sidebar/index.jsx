@@ -9,18 +9,21 @@ import {
   ScrollMainContent,
   ScrollMainContentText,
 } from "./Sidebar.styled";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ListMenu } from "../../../../utils/Menu";
 
 const Sidebar = () => {
+  const location = useLocation()
+
   const onRenderMenu = () => {
     let result;
+    const normalizedPath = location.pathname.replace(/^\/tiktok-ui/, '');
     if (ListMenu && ListMenu.length > 0) {
       result = ListMenu.map((menu, i) => {
         let Icon = menu.icon;
         return (
           <Link to={menu.path} key={'link' + i}>
-            <ScrollMainContent $active={location.pathname === menu.path}>
+            <ScrollMainContent $active={normalizedPath === menu.path}>
               <Icon />
               <ScrollMainContentText>{menu.name}</ScrollMainContentText>
             </ScrollMainContent>
