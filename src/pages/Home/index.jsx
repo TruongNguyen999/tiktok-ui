@@ -1,36 +1,61 @@
 import { VideoContainer, WrapperContainer } from "./Home.styled";
 import React, { useState, useEffect, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useDispatch, useSelector } from "react-redux";
+import { DISPATCH_GET_VIDEO_LIST } from "../../redux/types";
 
 const Home = () => {
-  const [videos, setVideos] = useState([]);
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const { videos, error } = useSelector((state) => state);
+
+  // const [videos, setVideos] = useState([]);
+  // const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const videoRefs = useRef([]);
+  const DOM_loader = useRef(null);
 
   // Hàm tải thêm video từ API
   const fetchVideos = async (pageNum) => {
-    try {
-      const response = await fetch(`https://tiktok.fullstack.edu.vn/api/videos?type=for-you&page=2`,
-        {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      if (!response.ok) throw new Error(`Lỗi khi gọi API: ${response.status}`);
-      const data = await response.json();
-      if (data.length === 0) setHasMore(false); // Không còn video để tải
-      return data.data;
-    } catch (err) {
-      setError(err.message);
-      return [];
-    }
+    dispatch({
+      type: DISPATCH_GET_VIDEO_LIST,
+      payload: {
+        type: "for-you",
+        page: pageNum,
+      },
+    });
   };
 
   // Tải video ban đầu
   useEffect(() => {
-    fetchVideos(1).then((data) => setVideos(data));
+    fetchVideos(1);
+
+    const handleScroll = () => {
+      const scrollableDiv = document.getElementById("scrollableDiv");
+        console.log(scrollableDiv);
+
+      if (scrollableDiv) {
+        const isBottom =
+          scrollableDiv.scrollTop + scrollableDiv.clientHeight >=
+          scrollableDiv.scrollHeight * 0.95;
+        // loadMoreVideos();
+
+        console.log(isBottom);
+        
+      }
+    };
+
+    const scrollableDiv = document.getElementById("scrollableDiv");
+    if (scrollableDiv) {
+      scrollableDiv.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      dispatch({ type: "CLEAR_ERROR" });
+      if (scrollableDiv) {
+        scrollableDiv.removeEventListener("scroll", handleScroll);
+      }
+    };
   }, []);
 
   // Tự động phát video trong khung nhìn
@@ -40,7 +65,9 @@ const Home = () => {
         entries.forEach((entry) => {
           const video = entry.target;
           if (entry.isIntersecting) {
-            video.play();
+            video.play().catch((err) => {
+              console.log("Không thể phát video:", err.message);
+            });
             video.dataset.active = "true"; // Đánh dấu video đang phát
           } else {
             video.pause();
@@ -71,21 +98,23 @@ const Home = () => {
   };
 
   // Tải thêm video khi cuộn
-  const loadMoreVideos = async () => {
-    const newVideos = await fetchVideos(page + 1);
-    setVideos((prev) => [...prev, ...newVideos]);
+  const loadMoreVideos = () => {
+    console.log("Truong log loadmorevideos");
+    fetchVideos(page + 1);
+    // setVideos((prev) => [...prev, ...newVideos]);
     setPage(page + 1);
   };
 
-  console.log(videos);
-  
-
   return (
-    <WrapperContainer>
+    <WrapperContainer >
       <InfiniteScroll
         dataLength={videos.length}
-        next={loadMoreVideos}
-        hasMore={hasMore}
+        next={() => {
+          console.log("Truong log next");
+          
+        }}
+        id="scrollableDiv"
+        hasMore={true}
         loader={<h4>Đang tải video...</h4>}
         style={{
           scrollSnapType: "y mandatory",
@@ -93,14 +122,18 @@ const Home = () => {
           height: "100vh",
         }}
       >
-        {error ? (
-          <div>Lỗi: {error}</div>
+        {error?.message ? (
+          <div>Lỗi: {error.message}</div>
         ) : videos.length > 0 ? (
           videos.map((video, index) => (
-            <VideoContainer key={video.id} $active={video.active || false}>
+            <VideoContainer
+              key={"video" + video.id}
+              $active={video.active || false}
+            >
               <video
                 ref={(el) => (videoRefs.current[index] = el)}
                 src={video.file_url}
+                loading="lazy"
                 autoPlay={true}
                 preload="auto"
                 controls
@@ -116,6 +149,8 @@ const Home = () => {
         ) : (
           "Đang tải video..."
         )}
+
+        <div key={"-1"} ref={DOM_loader} />
       </InfiniteScroll>
     </WrapperContainer>
   );

@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const WrapperContainer = styled.div`
     height: 100vh;
     width: calc(100vw - 240px);
+    overflow-y: hidden;
 `
 
 export const VideoContainer = styled.div`
