@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const WrapperSidebar = styled.div`
     max-width: 240px;
     width: 240px;
+    background-color: var(--background-mode);
 `
 
 export const SidebarContent = styled.div`
@@ -31,17 +32,19 @@ export const Search = styled.div`
     height: 40px;
     display: flex;
     justify-content: start;
-    background-color: rgb(242, 242, 242);
+    background-color: var(--background-color-blur);
     border-radius: 25px;
     cursor: pointer;
     align-items: center;
-    color: rgba(0, 0, 0, 0.34);
+    color: var(--text-color-placeholder);
+    font-size: calc(var(--font-size) - 2px);
 
     & > svg {
         width: 19px;
         height: 19px;
         margin-left: 10px;
         margin-right: 10px;
+        fill: var(--text-color);
     }
 `
 
@@ -49,22 +52,26 @@ export const DivScrollContainer = styled.div`
     width: 100%;
     max-width: 208px;
     height: 100%;
-    overflow-y: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none; 
     margin-top: 20px;
 `
 
 export const DivScrollMain = styled.div`
     width: 100%;
     height: 100%;
+    max-height: calc(100vh - 145px);
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none; 
 
     & a {
         text-decoration: none;
-        color: rgba(0, 0, 0, 1);
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        position: relative;
+        color: var(--text-color);
     }
 `
 
@@ -74,13 +81,13 @@ export const ScrollMainContent = styled.h2`
     height: 40px;
     min-height: 40px;
     border-radius: 10px;
-    font-size: 20px;
     font-weight: 300;
     cursor: pointer;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     position: relative;
+    font-size: var(--font-size);
 
     & > svg {
         width: 32px;
@@ -88,19 +95,20 @@ export const ScrollMainContent = styled.h2`
 
         &.ml {
             margin-left: 5px;
+            width: 26px;
         }
     }
 
     ${props => props.$active ? `
-        color: red;
+        color: var(--text-color-active);
 
         & > svg {
-            fill: red;
+            fill: var(--text-color-active);
         }
     ` : ''}
 
     &:hover {
-        background-color: rgb(242, 242, 242);
+        background-color: var(--background-color-hover-blur);
     }
 `
 
