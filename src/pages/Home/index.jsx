@@ -1,8 +1,21 @@
-import { VideoContainer, WrapperContainer } from "./Home.styled";
+import {
+  BtnAction,
+  Video,
+  VideoActions,
+  VideoContainer,
+  WrapperContainer,
+} from "./Home.styled";
 import React, { useState, useEffect, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { DISPATCH_GET_VIDEO_LIST } from "../../redux/types";
+import {
+  CommentIcon,
+  LikeIcon,
+  PanIcon,
+  PlusIcon,
+  ShareIcon,
+} from "../../assets";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -32,7 +45,7 @@ const Home = () => {
 
     const handleScroll = () => {
       const scrollableDiv = document.getElementById("scrollableDiv");
-        console.log(scrollableDiv);
+      console.log(scrollableDiv);
 
       if (scrollableDiv) {
         const isBottom =
@@ -41,7 +54,6 @@ const Home = () => {
         // loadMoreVideos();
 
         console.log(isBottom);
-        
       }
     };
 
@@ -99,19 +111,17 @@ const Home = () => {
 
   // Tải thêm video khi cuộn
   const loadMoreVideos = () => {
-    console.log("Truong log loadmorevideos");
     fetchVideos(page + 1);
     // setVideos((prev) => [...prev, ...newVideos]);
     setPage(page + 1);
   };
 
   return (
-    <WrapperContainer >
+    <WrapperContainer>
       <InfiniteScroll
         dataLength={videos.length}
         next={() => {
           console.log("Truong log next");
-          
         }}
         id="scrollableDiv"
         hasMore={true}
@@ -120,30 +130,78 @@ const Home = () => {
           scrollSnapType: "y mandatory",
           overflowY: "auto",
           height: "100vh",
+          scrollbarWidth: 'none',
+          paddingRight: '185px',
         }}
       >
         {error?.message ? (
           <div>Lỗi: {error.message}</div>
         ) : videos.length > 0 ? (
           videos.map((video, index) => (
-            <VideoContainer
-              key={"video" + video.id}
-              $active={video.active || false}
-            >
-              <video
-                ref={(el) => (videoRefs.current[index] = el)}
-                src={video.file_url}
-                loading="lazy"
-                autoPlay={true}
-                preload="auto"
-                controls
-                width="300"
-                onEnded={() => handleVideoEnded(index)}
-              />
-              <p>{video.text}</p>
-              <p>Lượt thích: {video.likes_count}</p>
-              <p>Bình luận: {video.comments_count}</p>
-              <p>Chia sẻ: {video.shares_count}</p>
+            <VideoContainer key={"video" + video.id}>
+
+              {/* video */}
+              <Video>
+                <video
+                  ref={(el) => (videoRefs.current[index] = el)}
+                  src={video.file_url}
+                  loading="lazy"
+                  autoPlay={true}
+                  preload="auto"
+                  controls
+                  onEnded={() => handleVideoEnded(index)}
+                />
+              </Video>
+              
+              {/* action */}
+              <VideoActions>
+                
+                {/* imgage user */}
+                <BtnAction $mb>
+                  <img src={video.user.avatar} alt="avatar" loading="lazy" />
+                  <span className="plus">
+                    <PlusIcon />
+                  </span>
+                </BtnAction>
+
+                {/* action like */}
+                <BtnAction>
+                  <span>
+                    <LikeIcon />
+                  </span>
+                  <strong>{video.likes_count}</strong>
+                </BtnAction>
+
+                {/* action comment */}
+                <BtnAction>
+                  <span>
+                    <CommentIcon />
+                  </span>
+                  <strong>{video.comments_count}</strong>
+                </BtnAction>
+
+                {/* action pan */}
+                <BtnAction>
+                  <span>
+                    <PanIcon />
+                  </span>
+                  <strong>{234}</strong>
+                </BtnAction>
+
+                {/* action share */}
+                <BtnAction>
+                  <span>
+                    <ShareIcon />
+                  </span>
+                  <strong>{video.shares_count}</strong>
+                </BtnAction>
+
+                {/* action tag */}
+                <BtnAction $mt>
+                  <img src={video.user.avatar} alt="avatar" loading="lazy" />
+                </BtnAction>
+
+              </VideoActions>
             </VideoContainer>
           ))
         ) : (

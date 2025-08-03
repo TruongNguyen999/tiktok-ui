@@ -28,7 +28,7 @@ export const Container = styled.div`
     align-items: center;
     gap: 0px;
     border-radius: 99px;
-    background: rgba(255, 255, 255, 0.8);
+    background-color: var(--background-color-blur);
     box-shadow: rgba(0, 0, 0, 0.07) 0px 2px 10px 0px;
 `
 
@@ -74,7 +74,7 @@ export const ActionbarBtn = styled.button`
     transform: none;
 
     &:hover {
-        background-color: rgba(0, 0, 0, 0.05);
+        background-color: var(--background-color-hover-blur);
     }
 `
 
@@ -138,6 +138,10 @@ export const BtnProfileActionbar = styled.button`
     font-weight: 500;
     letter-spacing: 0.15px;
     cursor: pointer;
+
+    &:hover {
+        background-color: var(--background-color-hover-blur);
+    }
 `
 
 export const BtnContentProfileActionbar = styled.div`

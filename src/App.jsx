@@ -1,9 +1,13 @@
 import { Routes, Route } from "react-router-dom";
 import { publicLayout as routes } from "./Routes";
 import DefaultLayout from "./component/Layouts/DefaultLayout";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 
 const App = () => {
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }, [])
   const onRenderRoutes = () => {
     let result;
     if (routes && routes.length > 0) {
