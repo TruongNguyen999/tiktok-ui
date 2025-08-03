@@ -157,7 +157,7 @@ const Home = () => {
               <VideoActions>
                 
                 {/* imgage user */}
-                <BtnAction $mb>
+                <BtnAction $mb={20}>
                   <img src={video.user.avatar} alt="avatar" loading="lazy" />
                   <span className="plus">
                     <PlusIcon />
@@ -197,7 +197,7 @@ const Home = () => {
                 </BtnAction>
 
                 {/* action tag */}
-                <BtnAction $mt>
+                <BtnAction $mt={10}>
                   <img src={video.user.avatar} alt="avatar" loading="lazy" />
                 </BtnAction>
 

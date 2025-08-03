@@ -50,8 +50,8 @@ export const BtnAction = styled.button`
   cursor: pointer;
   flex-direction: column;
 
-  ${(props) => props.mb && `margin-bottom: 20px;`}
-  ${(props) => props.mt && `margin-top: 10px;`}
+  ${(props) => props.$mb && `margin-bottom: ${props.$mb}px;`}
+  ${(props) => props.$mt && `margin-top: ${props.$mt}px;`}
 
   & > img {
     width: 48px;
